@@ -1,0 +1,5 @@
+- create req handler
+- create res handler
+- add password strength route/feature
+- add discord phising separately in url search with res
+- feature get malicious hashes from https://virusshare.com/hashes
