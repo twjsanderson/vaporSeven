@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.httpAccepted = exports.httpSuccess = exports.httpBadRequest = void 0;
 const error_1 = require("./error");
-const handlers_1 = require("./handlers");
+const httpHandlers_1 = require("../../middleware/httpHandlers");
 /** Error Responses */
 const httpBadRequest = (name) => {
-    throw new error_1.HttpRequestError(400, name, 'Invalid or malformed request.');
+    throw new error_1.HttpRequestError(400, name, "Invalid or malformed request.");
 };
 exports.httpBadRequest = httpBadRequest;
 // static unauthorized = (resource) => {
@@ -20,7 +20,7 @@ exports.httpBadRequest = httpBadRequest;
 // static unprocessableEntity = (resource) => {
 // throw new HttpRequestError(422, resource, 'The request was well-formed but unprocessable due to semantic errors')
 // };
-// // add how time limit here 
+// // add how time limit here
 // static tooManyRequests = (resource) => {
 // throw new HttpRequestError(429, resource, 'Too many requests made')
 // };
@@ -30,10 +30,10 @@ exports.httpBadRequest = httpBadRequest;
 // };
 /** Success Responses **/
 const httpSuccess = (response, body) => {
-    return (0, handlers_1.successHandler)(response, 200, body);
+    return (0, httpHandlers_1.successHandler)(response, 200, body);
 };
 exports.httpSuccess = httpSuccess;
 const httpAccepted = (response, body) => {
-    return (0, handlers_1.successHandler)(response, 202, body);
+    return (0, httpHandlers_1.successHandler)(response, 202, body);
 };
 exports.httpAccepted = httpAccepted;

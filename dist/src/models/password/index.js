@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.request = void 0;
-const PASSWORD = 'password';
-const ISCOMMON = 'isCommon';
+const PASSWORD = "password";
+const ISCOMMON = "isCommon";
 const request = (reqBody) => {
+    return true;
     // const reqBodyKeys = Object.keys(reqBody);
     // if (reqBodyKeys) {
     //     return true;
@@ -11,7 +12,7 @@ const request = (reqBody) => {
     // return false;
     // // verify data shape
     // if (
-    //     reqBodyKeys > 2 || 
+    //     reqBodyKeys > 2 ||
     //     !reqBodyKeys.includes(PASSWORD) ||
     //     (reqBodyKeys.length === 2 && !reqBodyKeys.includes(ISCOMMON))
     // ) {

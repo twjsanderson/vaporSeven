@@ -7,7 +7,7 @@ exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 exports.router = router;
-router.get('/password', (req, res, next) => {
+router.get("/password", (req, res, next) => {
     // formulate res, req and next?
     // asyncCatch();
 });
