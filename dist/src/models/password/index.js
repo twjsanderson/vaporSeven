@@ -1,36 +1,34 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.request = void 0;
+const httpResponses_1 = require("../../utils/httpResponses");
 const PASSWORD = "password";
 const ISCOMMON = "isCommon";
+// interface responseBody {
+//   status: string;
+// }
 const request = (reqBody) => {
-    return true;
-    // const reqBodyKeys = Object.keys(reqBody);
-    // if (reqBodyKeys) {
-    //     return true;
-    // }
-    // return false;
-    // // verify data shape
-    // if (
-    //     reqBodyKeys > 2 ||
-    //     !reqBodyKeys.includes(PASSWORD) ||
-    //     (reqBodyKeys.length === 2 && !reqBodyKeys.includes(ISCOMMON))
-    // ) {
-    //     return 403;
-    // }
-    // const { password, isCommon } = reqBody;
-    // // validate password
-    // if (typeof password !== 'string') {
-    //     throw new Error('password must be string')
-    // }
-    // if (password.length > 127 || !password.length) {
-    //     throw new Error('password must be between 1 and 127 characters in length')
-    // }
-    // // do password strength test
-    // // check against dictionary
-    // // create response object
-    // const res = { status: 'success' };
-    // return res
+    console.log(reqBody);
+    let error = false;
+    const reqBodyKeys = Object.keys(reqBody);
+    // Verify request shape
+    if (reqBodyKeys.length > 2 ||
+        !reqBodyKeys.includes(PASSWORD) ||
+        (reqBodyKeys.length === 2 && !reqBodyKeys.includes(ISCOMMON))) {
+        error = true;
+    }
+    const { password, isCommon } = reqBody;
+    // Validate password
+    if (typeof password !== "string" ||
+        password.length > 127 ||
+        !password.length) {
+        error = true;
+    }
+    // Validate isCommon if present
+    if (isCommon !== undefined && typeof isCommon !== "boolean") {
+        error = true;
+    }
+    return error ? (0, httpResponses_1.httpBadRequest)("/password") : reqBody;
 };
 exports.request = request;
 // export const response = (res: Response) => {

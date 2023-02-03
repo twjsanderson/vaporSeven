@@ -7,7 +7,7 @@ import { domains, discordPhishing } from "./src/resources/domains";
 import { JSONDomains, additionalDomains } from "./src/resources/JSONDomains";
 import { emails, disposableEmails } from "./src/resources/emails";
 
-import { errorHandler } from "./src/middleware/httpHandlers";
+import { errorHandler, requestHandler } from "./src/middleware/httpHandlers";
 import { httpBadRequest, httpSuccess } from "./src/utils/httpResponses";
 
 import { request } from "./src/models/password";
@@ -17,6 +17,8 @@ const app: Express = express();
 const port = process.env.PORT || 5000;
 
 app.use(express.json());
+
+app.use(requestHandler);
 
 const searchAdditionalJSONDomains = (domain: string, file: any) => {
   const json1 = JSON.stringify(file, null, "\t");
@@ -125,11 +127,9 @@ app.get("/email", (req: Request, res: Response) => {
 });
 
 app.get("/password", (req: Request, res: Response) => {
-  let reqBody: any;
-  if (req.body.length > 1) {
-    reqBody = JSON.parse(req.body);
-    console.log(reqBody);
-  }
+  const { body } = req;
+  console.log(body);
+  // console.log(request(body));
   // console.log(request(reqBody));
   return httpSuccess(res, "dfgsdf");
 });

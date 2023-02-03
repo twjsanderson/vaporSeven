@@ -1,5 +1,6 @@
 import { Express, Request, Response } from "express";
 import { passwordStrength } from "check-password-strength";
+import { httpBadRequest } from "../../utils/httpResponses";
 
 const PASSWORD = "password";
 const ISCOMMON = "isCommon";
@@ -9,41 +10,41 @@ interface requestBody {
   isCommon?: boolean;
 }
 
-interface responseBody {
-  status: string;
-}
+// interface responseBody {
+//   status: string;
+// }
 
 export const request = (reqBody: requestBody) => {
-  return true;
-  // const reqBodyKeys = Object.keys(reqBody);
-  // if (reqBodyKeys) {
-  //     return true;
-  // }
-  // return false;
-  // // verify data shape
-  // if (
-  //     reqBodyKeys > 2 ||
-  //     !reqBodyKeys.includes(PASSWORD) ||
-  //     (reqBodyKeys.length === 2 && !reqBodyKeys.includes(ISCOMMON))
-  // ) {
-  //     return 403;
-  // }
+  console.log(reqBody);
+  let error: boolean = false;
+  const reqBodyKeys = Object.keys(reqBody);
 
-  // const { password, isCommon } = reqBody;
+  // Verify request shape
+  if (
+    reqBodyKeys.length > 2 ||
+    !reqBodyKeys.includes(PASSWORD) ||
+    (reqBodyKeys.length === 2 && !reqBodyKeys.includes(ISCOMMON))
+  ) {
+    error = true;
+  }
 
-  // // validate password
-  // if (typeof password !== 'string') {
-  //     throw new Error('password must be string')
-  // }
-  // if (password.length > 127 || !password.length) {
-  //     throw new Error('password must be between 1 and 127 characters in length')
-  // }
+  const { password, isCommon } = reqBody;
 
-  // // do password strength test
-  // // check against dictionary
-  // // create response object
-  // const res = { status: 'success' };
-  // return res
+  // Validate password
+  if (
+    typeof password !== "string" ||
+    password.length > 127 ||
+    !password.length
+  ) {
+    error = true;
+  }
+
+  // Validate isCommon if present
+  if (isCommon !== undefined && typeof isCommon !== "boolean") {
+    error = true;
+  }
+
+  return error ? httpBadRequest("/password") : reqBody;
 };
 
 // export const response = (res: Response) => {

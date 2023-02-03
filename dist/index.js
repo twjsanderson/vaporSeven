@@ -16,6 +16,7 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 5000;
 app.use(express_1.default.json());
+app.use(httpHandlers_1.requestHandler);
 const searchAdditionalJSONDomains = (domain, file) => {
     const json1 = JSON.stringify(file, null, "\t");
     const chunkBody = json1.split(":");
@@ -114,11 +115,9 @@ app.get("/email", (req, res) => {
     return res.send(result);
 });
 app.get("/password", (req, res) => {
-    let reqBody;
-    if (req.body.length > 1) {
-        reqBody = JSON.parse(req.body);
-        console.log(reqBody);
-    }
+    const { body } = req;
+    console.log(body);
+    // console.log(request(body));
     // console.log(request(reqBody));
     return (0, httpResponses_1.httpSuccess)(res, "dfgsdf");
 });

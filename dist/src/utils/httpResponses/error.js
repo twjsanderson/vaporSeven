@@ -7,7 +7,6 @@ class BaseError extends Error {
         Object.setPrototypeOf(this, new.target.prototype);
     }
 }
-;
 class HttpRequestError extends BaseError {
     constructor(status, name, message) {
         super();
@@ -17,4 +16,3 @@ class HttpRequestError extends BaseError {
     }
 }
 exports.HttpRequestError = HttpRequestError;
-;
