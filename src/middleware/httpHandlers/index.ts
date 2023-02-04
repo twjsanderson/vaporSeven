@@ -1,17 +1,21 @@
 import { Request, Response, NextFunction } from "express";
 import { httpBadRequest } from "../../utils/httpResponses";
 
-export const requestHandler = (
+export const initalRequestHandler = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.header("Content-Type"), req.body);
+  const MAX_REQ_BODY_SIZE = 5;
+  const body = req?.body;
+  const bodySize = Object.keys(body).length;
+
   if (
     req.header("Content-Type") !== "application/json; charset=utf-8" ||
-    req.body === undefined
-    // not object ?
-    // limit object fields size?
+    body === undefined ||
+    typeof body !== "object" ||
+    body === null ||
+    bodySize > MAX_REQ_BODY_SIZE
   ) {
     return httpBadRequest("/");
   }
@@ -42,5 +46,5 @@ export const successHandler = (
 };
 
 export const asyncCatchHandler =
-  (fn: Function) => (req: Request, res: Response, next: NextFunction) =>
+  (fn: any) => (req: Request, res: Response, next: NextFunction) =>
     fn(req, res, next).catch(next);

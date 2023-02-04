@@ -1,21 +1,18 @@
-import { Express, Request, Response } from "express";
-import { passwordStrength } from "check-password-strength";
 import { httpBadRequest } from "../../utils/httpResponses";
 
 const PASSWORD = "password";
-const ISCOMMON = "isCommon";
+const CHECK_COMMONALITY = "checkCommonality";
 
 interface requestBody {
   password: string;
-  isCommon?: boolean;
+  checkCommonality?: boolean;
 }
 
 // interface responseBody {
 //   status: string;
 // }
 
-export const request = (reqBody: requestBody) => {
-  console.log(reqBody);
+export const validateRequest = (reqBody: requestBody) => {
   let error: boolean = false;
   const reqBodyKeys = Object.keys(reqBody);
 
@@ -23,15 +20,16 @@ export const request = (reqBody: requestBody) => {
   if (
     reqBodyKeys.length > 2 ||
     !reqBodyKeys.includes(PASSWORD) ||
-    (reqBodyKeys.length === 2 && !reqBodyKeys.includes(ISCOMMON))
+    (reqBodyKeys.length === 2 && !reqBodyKeys.includes(CHECK_COMMONALITY))
   ) {
     error = true;
   }
 
-  const { password, isCommon } = reqBody;
+  const { password, checkCommonality } = reqBody;
 
-  // Validate password
+  // Validate password field
   if (
+    password === undefined ||
     typeof password !== "string" ||
     password.length > 127 ||
     !password.length
@@ -39,8 +37,8 @@ export const request = (reqBody: requestBody) => {
     error = true;
   }
 
-  // Validate isCommon if present
-  if (isCommon !== undefined && typeof isCommon !== "boolean") {
+  // Validate checkCommonality field if present
+  if (checkCommonality !== undefined && typeof checkCommonality !== "boolean") {
     error = true;
   }
 

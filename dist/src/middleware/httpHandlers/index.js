@@ -1,19 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.asyncCatchHandler = exports.successHandler = exports.errorHandler = exports.requestHandler = void 0;
+exports.asyncCatchHandler = exports.successHandler = exports.errorHandler = exports.initalRequestHandler = void 0;
 const httpResponses_1 = require("../../utils/httpResponses");
-const requestHandler = (req, res, next) => {
-    console.log(req.header("Content-Type"), req.body);
+const initalRequestHandler = (req, res, next) => {
+    const MAX_REQ_BODY_SIZE = 5;
+    const body = req === null || req === void 0 ? void 0 : req.body;
+    const bodySize = Object.keys(body).length;
     if (req.header("Content-Type") !== "application/json; charset=utf-8" ||
-        req.body === undefined
-    // not object ?
-    // limit object fields size?
-    ) {
+        body === undefined ||
+        typeof body !== "object" ||
+        body === null ||
+        bodySize > MAX_REQ_BODY_SIZE) {
         return (0, httpResponses_1.httpBadRequest)("/");
     }
     next();
 };
-exports.requestHandler = requestHandler;
+exports.initalRequestHandler = initalRequestHandler;
 const errorHandler = (error, request, response, next) => {
     // console.log(error.stack, error.name);
     const status = error.status;
