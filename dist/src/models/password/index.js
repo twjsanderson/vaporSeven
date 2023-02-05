@@ -2,21 +2,15 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateRequest = void 0;
 const httpResponses_1 = require("../../utils/httpResponses");
-const PASSWORD = "password";
-const CHECK_COMMONALITY = "checkCommonality";
-// interface responseBody {
-//   status: string;
-// }
+const constants_1 = require("../../resources/constants");
 const validateRequest = (reqBody) => {
     let error = false;
     const reqBodyKeys = Object.keys(reqBody);
-    // Verify request shape
-    if (reqBodyKeys.length > 2 ||
-        !reqBodyKeys.includes(PASSWORD) ||
-        (reqBodyKeys.length === 2 && !reqBodyKeys.includes(CHECK_COMMONALITY))) {
+    // Validate request body shape
+    if (reqBodyKeys.length > 2 || !reqBodyKeys.includes(constants_1.PASSWORD)) {
         error = true;
     }
-    const { password, checkCommonality } = reqBody;
+    const { password } = reqBody;
     // Validate password field
     if (password === undefined ||
         typeof password !== "string" ||
@@ -24,12 +18,9 @@ const validateRequest = (reqBody) => {
         !password.length) {
         error = true;
     }
-    // Validate checkCommonality field if present
-    if (checkCommonality !== undefined && typeof checkCommonality !== "boolean") {
-        error = true;
-    }
     return error ? (0, httpResponses_1.httpBadRequest)("/password") : reqBody;
 };
 exports.validateRequest = validateRequest;
-// export const response = (res: Response) => {
-// }
+// export const response = (res: Response): IResponseBody => {
+//   return {};
+// };

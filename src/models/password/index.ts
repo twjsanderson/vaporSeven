@@ -1,31 +1,19 @@
 import { httpBadRequest } from "../../utils/httpResponses";
+import { IPasswordRequestBody, IPasswordResponseBody } from "../../types";
+import { PASSWORD } from "../../resources/constants";
 
-const PASSWORD = "password";
-const CHECK_COMMONALITY = "checkCommonality";
-
-interface requestBody {
-  password: string;
-  checkCommonality?: boolean;
-}
-
-// interface responseBody {
-//   status: string;
-// }
-
-export const validateRequest = (reqBody: requestBody) => {
+export const validateRequest = (
+  reqBody: IPasswordRequestBody
+): IPasswordRequestBody => {
   let error: boolean = false;
   const reqBodyKeys = Object.keys(reqBody);
 
-  // Verify request shape
-  if (
-    reqBodyKeys.length > 2 ||
-    !reqBodyKeys.includes(PASSWORD) ||
-    (reqBodyKeys.length === 2 && !reqBodyKeys.includes(CHECK_COMMONALITY))
-  ) {
+  // Validate request body shape
+  if (reqBodyKeys.length > 2 || !reqBodyKeys.includes(PASSWORD)) {
     error = true;
   }
 
-  const { password, checkCommonality } = reqBody;
+  const { password } = reqBody;
 
   // Validate password field
   if (
@@ -37,14 +25,9 @@ export const validateRequest = (reqBody: requestBody) => {
     error = true;
   }
 
-  // Validate checkCommonality field if present
-  if (checkCommonality !== undefined && typeof checkCommonality !== "boolean") {
-    error = true;
-  }
-
   return error ? httpBadRequest("/password") : reqBody;
 };
 
-// export const response = (res: Response) => {
-
-// }
+// export const response = (res: Response): IResponseBody => {
+//   return {};
+// };

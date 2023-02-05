@@ -1,8 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { validateRequest } from "../../models/password";
 import { httpSuccess } from "../../utils/httpResponses";
-
-import { passwordStrength } from "check-password-strength";
+import { checkPasswordStrength } from "../../utils/checkPasswordStrength";
 
 /**
  * password request model
@@ -26,6 +25,15 @@ const passwordController = (
 ) => {
   const reqBody = req.body;
   const validatedRequestBody = validateRequest(reqBody);
+  const { password } = validatedRequestBody;
+
+  // TODO: if password is common, mark it true
+  const isCommon: boolean = false;
+
+  const strength = checkPasswordStrength(password);
+  console.log(strength);
+
+  // format response
 
   return httpSuccess(res, validatedRequestBody);
 };
